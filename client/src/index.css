@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+
+:root{
+    --primary : #9883D5;
+    --secondary : #88C2E5 ;
+    --grey : #8D8D8D;
+    --primary-background: #FCF8F5;
+    --secondary-background: #F3ECE6;
+    --ternary-background: #D5D2FD;
+    --deep-green:  #34A353;
+    --deep-red: #E54335;
+    --low: #48bb78;
+    --medium: #f6ad55;
+    --high: #f56565;
+
+    --bricolage: Bricolage Grotesque;
+    --manrope : Manrope;
+}
+
+* {
+    font-family: var(--manrope);
+}
+
+html , body {
+  background: var(--primary-background);
+  scrollbar-width: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--bricolage);
+}
+
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background:#f2fcff; 
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background:  #ddd1ff; 
+  border-radius: 4px;
+  height: 1px;
+}
