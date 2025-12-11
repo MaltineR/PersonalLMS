@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
             return this.authProvider !== 'google';
         }
     },
-    // New fields for Google OAuth
     authProvider: {
         type: String,
         enum: ['local', 'google'],
@@ -31,47 +30,31 @@ const userSchema = new mongoose.Schema({
     },
     googleId: {
         type: String,
-        sparse: true // Allows null values but ensures uniqueness when present
+        sparse: true
     },
     location: {
         type: String
     },
-    
-    booksOwned: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book'
-    }],
-    booksReading: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book'
-    }],
-    booksBorrowed: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book'
-    }]
-    , 
-    booksLent: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Book'
-    }]
-    , 
-    noofbooksLent: {
-        type: Number,
-        default: 0
-    },
-    totalbooksread: {
-        type: Number,
-        default: 0
-    },
+    booksOwned: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    booksReading: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    booksBorrowed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    booksLent: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    noofbooksLent: { type: Number, default: 0 },
+    totalbooksread: { type: Number, default: 0 },
+
+    // <<< NEW FIELD >>>
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    }
 
 }, {
     timestamps: true
 });
 
-// Add compound index for email and authProvider for better query performance
+// Indexes
 userSchema.index({ email: 1, authProvider: 1 });
-
-// Add index for googleId for faster lookups
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

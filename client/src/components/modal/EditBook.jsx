@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const EditPage = ({ book, onSubmit, onClose }) => {
   const [selectedStatus, setSelectedStatus] = useState(book?.readingstatus || null);
   const [formData, setFormData] = useState({
-    title: book?.title || '',
-    author: book?.author || '',
-    genre: book?.genre || '',
-    totalpages: book?.totalpages || '',
-    pagesread: book?.pagesread || '',
-    price: book?.price || '',
-    public: book?.public || false
+    title: book?.title || "",
+    author: book?.author || "",
+    genre: book?.genre || "",
+    totalpages: book?.totalpages || "",
+    pagesread: book?.pagesread || "",
+    price: book?.price || "",
+    public: book?.public || false,
   });
 
-  // Update form data when book prop changes
   useEffect(() => {
     if (book) {
       setFormData({
-        title: book.title || '',
-        author: book.author || '',
-        genre: book.genre || '',
-        totalpages: book.totalpages || '',
-        pagesread: book.pagesread || '',
-        price: book.price || '',
-        public: book.public || false
+        title: book.title || "",
+        author: book.author || "",
+        genre: book.genre || "",
+        totalpages: book.totalpages || "",
+        pagesread: book.pagesread || "",
+        price: book.price || "",
+        public: book.public || false,
       });
       setSelectedStatus(book.readingstatus || null);
     }
@@ -30,77 +29,61 @@ const EditPage = ({ book, onSubmit, onClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleStatusSelect = (status) => {
-    setSelectedStatus(status);
-  };
+  const handleStatusSelect = (status) => setSelectedStatus(status);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!selectedStatus) {
-      alert('Please select a status for the book.');
+      alert("Please select a status for the book.");
       return;
     }
-    
+
     const updatedBook = {
       ...formData,
       readingstatus: selectedStatus,
       totalpages: Number(formData.totalpages),
       pagesread: Number(formData.pagesread),
-      price: Number(formData.price)
+      price: Number(formData.price),
+      _id: book._id, // ensure the id is included
     };
-    
-    onSubmit(updatedBook);
+
+    onSubmit(updatedBook); // calls BookCard which updates backend
   };
 
-  const handleClose = () => {
-    onClose();
-  };
+  const handleClose = () => onClose();
 
   const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      handleClose();
-    }
+    if (e.target === e.currentTarget) handleClose();
   };
 
   useEffect(() => {
     const handleEscapeKey = (e) => {
-      if (e.key === 'Escape') {
-        handleClose();
-      }
+      if (e.key === "Escape") handleClose();
     };
-
-    document.addEventListener('keydown', handleEscapeKey);
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
-    };
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
   }, []);
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden border border-gray-200">
-      
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3 text-2xl font-semibold text-[#9883D5]">
-            <div className="w-8 h-8 bg-[#9883D5] rounded-lg flex items-center justify-center text-white">
-              B
-            </div>
+            <div className="w-8 h-8 bg-[#9883D5] rounded-lg flex items-center justify-center text-white">B</div>
             Edit Book
           </div>
-          <button 
-            className="text-gray-500 hover:text-gray-700 transition-colors"
-            onClick={onClose}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button className="text-gray-500 hover:text-gray-700 transition-colors" onClick={onClose}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -108,134 +91,77 @@ const EditPage = ({ book, onSubmit, onClose }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="overflow-y-auto p-6 flex-1">
+          {/* Title */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Name of book</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-              placeholder="Name of book"
-              required
-            />
+            <input type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Name of book" required />
           </div>
 
+          {/* Author */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Author Name</label>
-            <input
-              type="text"
-              name="author"
-              value={formData.author}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-              placeholder="Author Name"
-              required
-            />
+            <input type="text" name="author" value={formData.author} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Author Name" required />
           </div>
 
+          {/* Genre */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Genre</label>
-            <input
-              type="text"
-              name="genre"
-              value={formData.genre}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-              placeholder="Genre"
-              required
-            />
+            <input type="text" name="genre" value={formData.genre} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Genre" required />
           </div>
 
+          {/* Total Pages */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Total no. of pages</label>
-            <input
-              type="number"
-              name="totalpages"
-              value={formData.totalpages}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-              placeholder="Total no. of pages"
-              min="1"
-              required
-            />
+            <input type="number" name="totalpages" value={formData.totalpages} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Total no. of pages" min="1" required />
           </div>
 
+          {/* Pages Read (only if not read) */}
+          {selectedStatus !== "read" && (
+            <div className="mb-6">
+              <label className="block mb-2 font-semibold text-gray-800">No. of pages read</label>
+              <input type="number" name="pagesread" value={formData.pagesread} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="No. of pages read" min="0" max={formData.totalpages || ""} />
+            </div>
+          )}
+
+          {/* Price */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Price (optional)</label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-              placeholder="Price"
-              min="0"
-              step="0.01"
-            />
+            <input type="number" name="price" value={formData.price} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Price" min="0" step="0.01" />
           </div>
 
+          {/* Public checkbox */}
           <div className="mb-6">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                name="public"
-                checked={formData.public}
-                onChange={handleInputChange}
-                className="w-4 h-4 text-[#9883D5] border-2 border-gray-300 rounded focus:ring-[#9883D5] focus:ring-2"
-              />
+              <input type="checkbox" name="public" checked={formData.public} onChange={handleInputChange} className="w-4 h-4 text-[#9883D5] border-2 border-gray-300 rounded focus:ring-[#9883D5] focus:ring-2" />
               <span className="font-semibold text-gray-800">Make this book public</span>
             </label>
           </div>
 
+          {/* Reading status */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Status</label>
             <div className="flex gap-3 mt-2">
-              <div
-                className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-full transition-all border-2 ${selectedStatus === 'read' ? 'border-[#9883D5] bg-[#D5D2FD]' : 'border-transparent'} hover:bg-gray-50`}
-                onClick={() => handleStatusSelect('read')}
-              >
-                <div className="w-3 h-3 rounded-full bg-[#f56565]"></div>
-                <span className="font-medium text-gray-800">Read</span>
-              </div>
-              <div
-                className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-full transition-all border-2 ${selectedStatus === 'reading' ? 'border-[#9883D5] bg-[#D5D2FD]' : 'border-transparent'} hover:bg-gray-50`}
-                onClick={() => handleStatusSelect('reading')}
-              >
-                <div className="w-3 h-3 rounded-full bg-[#48bb78]"></div>
-                <span className="font-medium text-gray-800">Reading</span>
-              </div>
-              <div
-                className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-full transition-all border-2 ${selectedStatus === 'to-read' ? 'border-[#9883D5] bg-[#D5D2FD]' : 'border-transparent'} hover:bg-gray-50`}
-                onClick={() => handleStatusSelect('to-read')}
-              >
-                <div className="w-3 h-3 rounded-full bg-[#f6ad55]"></div>
-                <span className="font-medium text-gray-800">To Read</span>
-              </div>
+              {["read", "reading", "to-read"].map((status) => (
+                <div
+                  key={status}
+                  className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-full transition-all border-2 ${
+                    selectedStatus === status ? "border-[#9883D5] bg-[#D5D2FD]" : "border-transparent"
+                  } hover:bg-gray-50`}
+                  onClick={() => handleStatusSelect(status)}
+                >
+                  <div
+                    className={`w-3 h-3 rounded-full ${
+                      status === "read" ? "bg-[#f56565]" : status === "reading" ? "bg-[#48bb78]" : "bg-[#f6ad55]"
+                    }`}
+                  ></div>
+                  <span className="font-medium text-gray-800">{status.replace("-", " ")}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {selectedStatus !== 'read' && (
-            <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-800">No. of pages read</label>
-              <input
-                type="number"
-                name="pagesread"
-                value={formData.pagesread}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5] placeholder-gray-400"
-                placeholder="No. of pages read"
-                min="0"
-                max={formData.totalpages || ''}
-              />
-            </div>
-          )}
-
           <div className="pt-4">
-            <button 
-              type="submit" 
-              className="w-full bg-[#9883D5] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors"
-            >
+            <button type="submit" className="w-full bg-[#9883D5] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors">
               UPDATE
             </button>
           </div>

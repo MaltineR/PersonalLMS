@@ -26,7 +26,7 @@ const FullScreenHero = () => (
         className="flex items-center gap-2 sm:gap-6 mt-4"
       >
         <h1 className="text-[100px] font-semibold bg-gradient-to-b from-[var(--primary)] to-black bg-clip-text text-transparent">
-          ShelfSmart
+          BookWorm
         </h1>
       </motion.div>
       <motion.p
@@ -123,19 +123,19 @@ const PageFooter = () => (
   <footer className="bg-[var(--primary)] text-[var(--text-primary)] pt-10 pb-6 px-6 md:px-12 mt-10 relative z-10">
     <div className="text-center mb-8">
       <p className="text-sm mb-4">
-        Built with love <span className="text-[var(--secondary)]">♡</span> by Team X Coders
+        Built with love <span className="text-[var(--secondary)]">♡</span>
       </p>
       <div className="flex justify-center gap-4 flex-wrap">
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="bg-[var(--surface-dark)] text-[var(--text-primary)] px-4 py-2 rounded-md text-sm hover:bg-[var(--surface-dark-hover)] transition flex items-center gap-2">
           <Github size={16} /> Star on GitHub
         </a>
-        <a href="mailto:contact@shelfsmart.com" className="bg-[var(--accent-light)] text-[var(--text-on-light)] px-4 py-2 rounded-md text-sm hover:bg-[var(--accent-light-hover)] transition flex items-center gap-2">
+        <a href="mailto:contact@bookworm.com" className="bg-[var(--accent-light)] text-[var(--text-on-light)] px-4 py-2 rounded-md text-sm hover:bg-[var(--accent-light-hover)] transition flex items-center gap-2">
           <Mail size={16} /> Contact Us
         </a>
       </div>
     </div>
     <div className="border-t border-[var(--text-primary)]/20 flex flex-col md:flex-row justify-between items-center pt-6 text-sm">
-      <span className="font-semibold">ShelfSmart</span>
+      <span className="font-semibold">Bookworm</span>
       <div className="flex gap-4 mt-2 md:mt-0">
         <a href="#" className="hover:underline">Privacy policy</a>
         <a href="#" className="hover:underline">Terms & conditions</a>
