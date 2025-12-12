@@ -56,5 +56,6 @@ const userSchema = new mongoose.Schema({
 // Indexes
 userSchema.index({ email: 1, authProvider: 1 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 module.exports = User;
+

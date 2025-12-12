@@ -57,5 +57,5 @@ const borrowRequestSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const BorrowRequest = mongoose.model('BorrowRequest', borrowRequestSchema);
+const BorrowRequest = mongoose.models.BorrowRequest || mongoose.model('BorrowRequest', borrowRequestSchema);
 module.exports = BorrowRequest;

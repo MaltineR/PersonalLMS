@@ -28,5 +28,5 @@ const readingProgressSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-const ReadingModel= mongoose.model("ReadingProgress", readingProgressSchema);
+const ReadingModel = mongoose.models.ReadingProgress || mongoose.model("ReadingProgress", readingProgressSchema);
 module.exports = ReadingModel;
