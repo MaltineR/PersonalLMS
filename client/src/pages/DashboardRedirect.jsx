@@ -1,16 +1,23 @@
-import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import AdminDashboard from "./AdminDashboard";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../hooks/AuthHOC";
 
-function DashboardRedirect() {
-  const { user, loading } = useAuth();
+export default function DashboardRedirect() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  if (loading || !user) return null; // still loading
+  useEffect(() => {
+    if (user === null) return; // still loading, do nothing
 
-  return user.role === "admin"
-    ? <AdminDashboard />
-    : <Dashboard />;
+    if (user?.role === "admin") {
+      navigate("/admin");
+    } else if (user?.role === "user") {
+      navigate("/dashboard");
+    } else {
+      // fallback if role is unknown
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  return <div>Redirecting...</div>;
 }
-
-export default DashboardRedirect;

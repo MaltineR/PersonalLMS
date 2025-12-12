@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../utils/vars';
 
@@ -9,10 +9,20 @@ function AuthHOC({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         async function verifyToken() {
             const token = localStorage.getItem('token');
+            const publicRoutes = ['/', '/signin', '/signup'];
+
+            // If on a public route, don’t redirect even if token is missing
+            if (!token && publicRoutes.includes(location.pathname)) {
+                setLoading(false);
+                return;
+            }
+
+            // If token missing on a protected route, redirect to signin
             if (!token) {
                 navigate('/signin');
                 setLoading(false);
@@ -27,8 +37,7 @@ function AuthHOC({ children }) {
                 );
 
                 if (response.data.ok) {
-                 console.log("AuthHOC received user:", response.data.user);  // <── ADD THIS
-                 setUser(response.data.user);
+                    setUser(response.data.user);
                 } else {
                     localStorage.removeItem('token');
                     navigate('/signin');
@@ -36,14 +45,16 @@ function AuthHOC({ children }) {
             } catch (error) {
                 console.error('Error verifying token:', error);
                 localStorage.removeItem('token');
-                navigate('/signin');
+                if (!publicRoutes.includes(location.pathname)) {
+                    navigate('/signin');
+                }
             } finally {
                 setLoading(false);
             }
         }
 
         verifyToken();
-    }, [navigate]);
+    }, [navigate, location.pathname]);
 
     return (
         <AuthContext.Provider value={{ user, setUser }}>
