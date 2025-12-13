@@ -18,7 +18,6 @@ function SideBar() {
             { icon: LayoutDashboard, label: "Admin Dashboard", link: "/admin" },
             { icon: Album, label: "All Books", link: "/admin/books" },
             { icon: Users, label: "All Users", link: "/admin/users" },
-            { icon: Telescope, label: "Explore", link: "/explore" }, // optional
         ];
     } else {
         menuItems = [

@@ -209,14 +209,6 @@ function MyLibrary() {
             >
               Owned
             </button>
-            <button
-              onClick={() => setActiveTab("borrowed")}
-              className={`py-2 px-4 rounded-xl transition-all ${
-                activeTab === "borrowed" ? "bg-[var(--primary)] text-white" : "bg-white"
-              }`}
-            >
-              Borrowed
-            </button>
           </div>
 
           <button

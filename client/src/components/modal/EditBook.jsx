@@ -78,8 +78,8 @@ const EditPage = ({ book, onSubmit, onClose }) => {
     >
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden border border-gray-200">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div className="flex items-center gap-3 text-2xl font-semibold text-[#9883D5]">
-            <div className="w-8 h-8 bg-[#9883D5] rounded-lg flex items-center justify-center text-white">B</div>
+          <div className="flex items-center gap-3 text-2xl font-semibold text-[#2d7a67]">
+            <div className="bg-[#2d7a67] flex items-center justify-center text-white"></div>
             Edit Book
           </div>
           <button className="text-gray-500 hover:text-gray-700 transition-colors" onClick={onClose}>
@@ -161,7 +161,7 @@ const EditPage = ({ book, onSubmit, onClose }) => {
           </div>
 
           <div className="pt-4">
-            <button type="submit" className="w-full bg-[#9883D5] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors">
+            <button type="submit" className="w-full bg-[#2d7a67] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors">
               UPDATE
             </button>
           </div>

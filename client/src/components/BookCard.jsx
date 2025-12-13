@@ -102,7 +102,7 @@ function BookCard({ book, onDelete, onUpdate, onTogglePublic, isBorrowed }) {
 
         <button
           onClick={toggleEditModal}
-          className="ml-auto right-4 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white hover:bg-purple-600 transition-colors"
+          className="ml-auto right-4 w-8 h-8 bg-green-800 rounded-full flex items-center justify-center text-white hover:bg-green-600 transition-colors"
         >
           <Edit3 size={16} />
         </button>
