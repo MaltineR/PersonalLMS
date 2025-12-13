@@ -1,43 +1,45 @@
 import { useState, useContext, useEffect } from "react";
-import { LayoutDashboard, Album, RotateCcw, Telescope, ShoppingCart, Shield } from 'lucide-react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthHOC";
+import { LayoutDashboard, Album, Telescope, Users, Shield } from "lucide-react";
 
 function SideBar() {
     const { user } = useContext(AuthContext);
-    console.log("Sidebar user:", user);  // <── ADD THIS
-
     const navigate = useNavigate();
     const location = useLocation();
 
     const [activeItem, setActiveItem] = useState(0);
 
-    // Default menu items
-    const menuItems = [
-        { icon: LayoutDashboard, label: 'Grid', link: "/dashboard" },
-        { icon: Album, label: 'Save', link: "/mylibrary" },
-       // { icon: RotateCcw, label: 'Rotate', link: "/book/borrow" },
-        { icon: Telescope, label: 'Share', link: "/explore" },
-        // { icon: ShoppingCart, label: 'Cart', link: "/store" },
-    ];
+    // Define menu based on user role
+    let menuItems = [];
 
-    // Add admin menu if user is admin
-    if (user?.role === 'admin') {
-        menuItems.push({ icon: Shield, label: 'Admin', link: "/admin" });
+    if (user?.role === "admin") {
+        menuItems = [
+            { icon: LayoutDashboard, label: "Admin Dashboard", link: "/admin" },
+            { icon: Album, label: "All Books", link: "/admin/books" },
+            { icon: Users, label: "All Users", link: "/admin/users" },
+            { icon: Telescope, label: "Explore", link: "/explore" }, // optional
+        ];
+    } else {
+        menuItems = [
+            { icon: LayoutDashboard, label: "Dashboard", link: "/dashboard" },
+            { icon: Album, label: "My Library", link: "/mylibrary" },
+            { icon: Telescope, label: "Explore", link: "/explore" },
+        ];
     }
 
     // Set active menu based on current path
     useEffect(() => {
         const currentIndex = menuItems.findIndex(item => item.link === location.pathname);
         if (currentIndex !== -1) setActiveItem(currentIndex);
-    }, [location.pathname, user]); // rerun if path or user changes
+    }, [location.pathname, user]);
 
     const handleClick = (link, index) => {
         setActiveItem(index);
         navigate(link);
     };
 
-    // Show loading placeholder if user not loaded yet
+    // Loading state if user is not yet fetched
     if (!user) {
         return (
             <div className="fixed left-0 top-0 h-screen flex items-center z-50 ml-6">

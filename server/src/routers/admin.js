@@ -1,3 +1,4 @@
+// routes/admin.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/UserModel');
@@ -5,12 +6,10 @@ const Book = require('../models/BookModel');
 const authMiddleware = require('../middlewares/authMiddleware');
 const isAdmin = require('../middlewares/isAdmin');
 
-// ----------------------
 // Get all users
-// ----------------------
 router.get('/users', authMiddleware, isAdmin, async (req, res) => {
     try {
-        const users = await User.find().select('-password'); // exclude password
+        const users = await User.find().select('-password');
         res.json(users);
     } catch (err) {
         console.error(err);
@@ -18,12 +17,10 @@ router.get('/users', authMiddleware, isAdmin, async (req, res) => {
     }
 });
 
-// ----------------------
 // Get all books
-// ----------------------
 router.get('/books', authMiddleware, isAdmin, async (req, res) => {
     try {
-        const books = await Book.find().populate('owner', 'name email'); // optional
+        const books = await Book.find().populate('owner', 'name email');
         res.json(books);
     } catch (err) {
         console.error(err);
@@ -31,9 +28,7 @@ router.get('/books', authMiddleware, isAdmin, async (req, res) => {
     }
 });
 
-// ----------------------
 // Delete a user
-// ----------------------
 router.delete('/users/:id', authMiddleware, isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
@@ -45,9 +40,7 @@ router.delete('/users/:id', authMiddleware, isAdmin, async (req, res) => {
     }
 });
 
-// ----------------------
 // Delete a book
-// ----------------------
 router.delete('/books/:id', authMiddleware, isAdmin, async (req, res) => {
     try {
         const bookId = req.params.id;
