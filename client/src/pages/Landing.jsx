@@ -1,63 +1,50 @@
-import { Link } from "react-router-dom";
-import { Sun, Github, Mail } from "lucide-react";
+import { Mail, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 
-// --- Instance 1: Full-Screen Hero Section (REFACTORED WITH CSS VARIABLES) ---
+// --- Hero Section with floating books animation ---
 const FullScreenHero = () => (
-  <section className="min-h-screen flex items-center justify-center text-center px-4 relative z-10">
+  <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative z-10 overflow-hidden">
+    {[...Array(5)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute text-[var(--primary)]"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 600, opacity: 0.7 }}
+        transition={{ duration: 10 + i, repeat: Infinity, ease: "linear" }}
+        style={{ left: `${i * 15 + 10}%` }}
+      >
+        <BookOpen size={30} />
+      </motion.div>
+    ))}
+
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ staggerChildren: 0.2, delayChildren: 0.3 }}
-      className="flex flex-col items-center"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.3 }}
+      className="flex flex-col items-center z-20"
     >
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeOut", duration: 0.6 }}
-        className="text-[var(--text-primary)] text-xl md:text-4xl font-medium"
-      >
+      <h2 className="text-[var(--text-primary)] text-xl md:text-4xl font-medium mb-2">
         Welcome to
-      </motion.h2>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeOut", duration: 0.6, delay: 0.2 }}
-        className="flex items-center gap-2 sm:gap-6 mt-4"
+      </h2>
+      <h1 className="text-[100px] font-bold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent">
+        BookWorm
+      </h1>
+      <p className="mt-6 text-[var(--text-primary)] text-base md:text-lg max-w-md">
+        Discover, organize, and share your personal library in style.
+      </p>
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="mt-10 px-10 py-4 border-2 border-[var(--primary)] text-[var(--primary)] rounded-lg font-semibold text-lg transition-all"
+        onClick={() => (window.location.href = "/signup")}
       >
-        <h1 className="text-[100px] font-semibold bg-gradient-to-b from-[var(--primary)] to-black bg-clip-text text-transparent">
-          BookWorm
-        </h1>
-      </motion.div>
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeOut", duration: 0.6, delay: 0.4 }}
-        className="mt-6 text-[var(--text-primary)] text-base md:text-lg max-w-md"
-      >
-        Your next great read is just a tap away
-      </motion.p>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeOut", duration: 0.6, delay: 0.6 }}
-      >
-
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-10 px-10 py-4 border-2 border-[var(--primary)] text-[var(--primary)] rounded-md font-semibold text-lg hover:bg-black hover:text-white transition-all"
-          onClick={() => window.location.href = '/signup'}
-        >
-          Sign Up
-        </motion.button>
-      </motion.div>
+        Get Started
+      </motion.button>
     </motion.div>
   </section>
 );
 
-// --- Instance 2: First Laptop Feature (REFACTORED WITH CSS VARIABLES) ---
+// --- First Laptop Feature ---
 const FirstLaptopFeature = () => (
   <section className="py-24 md:py-32 container mx-auto px-6 flex flex-col items-center text-center">
     <motion.div
@@ -83,7 +70,7 @@ const FirstLaptopFeature = () => (
   </section>
 );
 
-// --- Instance 3: Community Feature (REFACTORED WITH CSS VARIABLES) ---
+// --- Community Feature ---
 const CommunityFeature = () => (
   <section className="py-24 md:py-32 relative z-10 overflow-hidden">
     <div className="flex flex-col md:flex-row items-center">
@@ -118,52 +105,44 @@ const CommunityFeature = () => (
   </section>
 );
 
-// --- Footer Component (REFACTORED WITH CSS VARIABLES) ---
+// --- Footer ---
 const PageFooter = () => (
-  <footer className="bg-[var(--primary)] text-[var(--text-primary)] pt-10 pb-6 px-6 md:px-12 mt-10 relative z-10">
-    <div className="text-center mb-8">
-      <p className="text-sm mb-4">
-        Built with love <span className="text-[var(--secondary)]">♡</span>
-      </p>
+  <footer className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white pt-10 pb-6 px-6 md:px-12 mt-auto">
+    <div className="text-center mb-4">
+      <p className="text-sm mb-2"></p>
       <div className="flex justify-center gap-4 flex-wrap">
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="bg-[var(--surface-dark)] text-[var(--text-primary)] px-4 py-2 rounded-md text-sm hover:bg-[var(--surface-dark-hover)] transition flex items-center gap-2">
-          <Github size={16} /> Star on GitHub
-        </a>
-        <a href="mailto:contact@bookworm.com" className="bg-[var(--accent-light)] text-[var(--text-on-light)] px-4 py-2 rounded-md text-sm hover:bg-[var(--accent-light-hover)] transition flex items-center gap-2">
+        <a
+          href="mailto:contact@bookworm.com"
+          className="bg-white text-[var(--secondary)] px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition flex items-center gap-2"
+        >
           <Mail size={16} /> Contact Us
         </a>
       </div>
     </div>
-    <div className="border-t border-[var(--text-primary)]/20 flex flex-col md:flex-row justify-between items-center pt-6 text-sm">
+    <div className="border-t border-white/30 flex flex-col md:flex-row justify-between items-center pt-4 text-sm">
       <span className="font-semibold">Bookworm</span>
       <div className="flex gap-4 mt-2 md:mt-0">
-        <a href="#" className="hover:underline">Privacy policy</a>
-        <a href="#" className="hover:underline">Terms & conditions</a>
+        <a href="#" className="hover:underline">
+          Privacy policy
+        </a>
+        <a href="#" className="hover:underline">
+          Terms & conditions
+        </a>
       </div>
     </div>
   </footer>
 );
 
-// --- Main Landing Page Component (REFACTORED WITH CSS VARIABLES) ---
+// --- Main Landing Page ---
 function LandingPage() {
   return (
-    <div className="min-h-screen w-full bg-[var(--background)] font-['Manrope'] overflow-x-hidden overflow-y-auto relative">
-      <header className="absolute top-6 right-6 flex items-center gap-3 z-20">
-        <Link
-          to="/login"
-          className="bg-[var(--accent-light)] hover:bg-[var(--accent-light-hover)] transition-colors px-5 py-2 rounded-md font-medium text-[var(--text-on-light)] shadow"
-        >
-          Login
-        </Link>
-        <Sun className="text-[var(--text-primary)]" size={20} />
-      </header>
-
-      {/* Decorative background blobs now use CSS variables */}
+    <div className="min-h-screen w-full bg-[var(--background)] font-['Manrope'] flex flex-col">
+      {/* Decorative Blobs */}
       <div className="absolute -top-40 -left-52 w-[500px] h-[500px] bg-[var(--secondary)] rounded-full opacity-30 z-0"></div>
       <div className="absolute -bottom-40 -left-44 w-[378px] h-[189px] bg-[var(--secondary)] rounded-t-full opacity-30 z-0"></div>
       <div className="absolute -top-40 right-0 w-[500px] h-[500px] bg-[var(--secondary)] rounded-full opacity-20 z-0"></div>
 
-      <main>
+      <main className="flex-1">
         <FullScreenHero />
         <FirstLaptopFeature />
         <CommunityFeature />
