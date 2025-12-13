@@ -227,7 +227,7 @@ const IssueBook = ({ onClose, onSubmit }) => {
           <div className="pt-4">
             <button 
               type="submit" 
-              className="w-full bg-[#2d7a67] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors"
+              className="w-full bg-[#2d7a67] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#80acaa] transition-colors"
             >
               SUBMIT
             </button>

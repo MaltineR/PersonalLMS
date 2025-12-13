@@ -161,7 +161,7 @@ const EditPage = ({ book, onSubmit, onClose }) => {
           </div>
 
           <div className="pt-4">
-            <button type="submit" className="w-full bg-[#2d7a67] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8571c7] transition-colors">
+            <button type="submit" className="w-full bg-[#2d7a67] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#80acaa] transition-colors">
               UPDATE
             </button>
           </div>
