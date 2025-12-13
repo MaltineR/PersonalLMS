@@ -4,12 +4,12 @@
 
 
 :root{
-    --primary : #9883D5;
+    --primary : #2d7a67;
     --secondary : #88C2E5 ;
     --grey : #8D8D8D;
     --primary-background: #FCF8F5;
     --secondary-background: #F3ECE6;
-    --ternary-background: #D5D2FD;
+    --ternary-background: #7cd2ba;
     --deep-green:  #34A353;
     --deep-red: #E54335;
     --low: #48bb78;
@@ -50,7 +50,7 @@ h6 {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background:  #ddd1ff; 
+  background:  #89e2de; 
   border-radius: 4px;
   height: 1px;
 }

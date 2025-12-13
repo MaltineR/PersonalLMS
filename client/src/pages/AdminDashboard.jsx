@@ -54,7 +54,7 @@ const AdminDashboard = () => {
         <h1 className="text-[60px] font-bold">Admin Dashboard</h1>
         <div className="flex items-center gap-4">
           <span className="text-[30px]">Welcome,</span>
-          <span className="text-[30px] text-[#9883D5]">{user?.name}</span>
+          <span className="text-[30px] text-[#2e876e]">{user?.name}</span>
         </div>
         <div className="text-right italic text-gray-600 mt-2">
           "With great power comes great responsibility."
