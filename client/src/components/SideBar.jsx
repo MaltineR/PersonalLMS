@@ -16,9 +16,9 @@ function SideBar() {
     const menuItems = [
         { icon: LayoutDashboard, label: 'Grid', link: "/dashboard" },
         { icon: Album, label: 'Save', link: "/mylibrary" },
-        { icon: RotateCcw, label: 'Rotate', link: "/book/borrow" },
+       // { icon: RotateCcw, label: 'Rotate', link: "/book/borrow" },
         { icon: Telescope, label: 'Share', link: "/explore" },
-        { icon: ShoppingCart, label: 'Cart', link: "/store" },
+        // { icon: ShoppingCart, label: 'Cart', link: "/store" },
     ];
 
     // Add admin menu if user is admin

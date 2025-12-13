@@ -46,14 +46,18 @@ function AuthHOC({ children }) {
       }
     };
 
-    // Delay to ensure login stores token before verification
-    const timer = setTimeout(verifyToken, 50);
-    return () => clearTimeout(timer);
+    verifyToken();
   }, [navigate, location.pathname]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? (
+        <div className="h-screen flex items-center justify-center text-2xl">
+          Loading...
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }

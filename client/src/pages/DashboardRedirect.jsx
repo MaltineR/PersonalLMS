@@ -7,17 +7,21 @@ export default function DashboardRedirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user === null) return; // still loading, do nothing
+    if (!user) return; // wait until user is set
 
-    if (user?.role === "admin") {
-      navigate("/admin");
-    } else if (user?.role === "user") {
-      navigate("/dashboard");
+    // Redirect based on role
+    if (user.role === "admin") {
+      navigate("/admin", { replace: true });
+    } else if (user.role === "user") {
+      navigate("/dashboard", { replace: true });
     } else {
-      // fallback if role is unknown
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [user, navigate]);
 
-  return <div>Redirecting...</div>;
+  return (
+    <div className="h-screen flex items-center justify-center text-2xl">
+      {user ? "Redirecting..." : "Loading..."}
+    </div>
+  );
 }
