@@ -1,139 +1,212 @@
-import React, { useState, useEffect } from 'react';
-import BookCard from '../components/BookCard';
-import ContinueLearningBookCard from '../components/ContinueLearningBookCard';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { BASE_URL } from '../utils/vars';
+import React, { useState, useEffect } from "react";
+import ContinueLearningBookCard from "../components/ContinueLearningBookCard";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../utils/vars";
 
 function Dashboard() {
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [allBooks, setAllBooks] = useState([]);
   const [readingBooks, setReadingBooks] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [stats, setStats] = useState({
-    borrowedBooks: 0,
-    booksLent: 0,
-    booksRead: 0
-  });
-  const [noOfBooksLent, setNoOfBooksLent] = useState(0);
-  const [noOfBooksOwned, setNoOfBooksOwned] = useState(0);
+
+  // 🤖 AI STATES
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiResult, setAiResult] = useState([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
-    setLoading(true);
-    setError(null);
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No authentication token found');
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token");
 
-      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
 
-      const [userRes, booksRes, statsRes] = await Promise.all([
+      const [userRes, booksRes] = await Promise.all([
         axios.get(`${BASE_URL}/api/v1/user/me`, config),
         axios.get(`${BASE_URL}/api/v1/book/getallbooks`, config),
-        axios.get(`${BASE_URL}/api/v1/book/dashboard/stats`, config).catch(() => ({
-          data: { stats: { borrowedBooks: 0, booksLent: 0, booksRead: 0 } }
-        }))
       ]);
 
       const userData = userRes.data.user;
       setUser(userData);
-      setNoOfBooksLent(userData.noofbooksLent || 0);
-      setNoOfBooksOwned(userData.booksOwned?.length || 0);
 
       const books = booksRes.data.books || [];
       setAllBooks(books);
 
-      const currentlyReading = books.filter(book => book.readingstatus.toLowerCase() === 'reading');
-      setReadingBooks(currentlyReading);
-
-      setStats(statsRes.data.stats || { borrowedBooks: 0, booksLent: 0, booksRead: 0 });
-
+      setReadingBooks(
+        books.filter(
+          (b) => b.readingstatus?.toLowerCase() === "reading"
+        )
+      );
     } catch (err) {
-      console.error('Error fetching dashboard data:', err);
-      setError(err.response?.data?.message || err.message || 'Failed to load dashboard');
+      console.error(err);
+      setError("Failed to load dashboard");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleContinueReading = () => {
-    navigate('/mylibrary');
+  // 🤖 AI QUERY
+  const handleAIQuery = async () => {
+    if (!aiQuery.trim() || aiLoading) return;
+
+    try {
+      setAiLoading(true);
+      setAiError(null);
+      setAiResult([]);
+
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post(
+        `${BASE_URL}/api/v1/user/ai-query`,
+        { query: aiQuery },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const data = res.data?.data;
+
+      if (Array.isArray(data) && data.length > 0) {
+        setAiResult(data);
+      } else {
+        setAiError("No results found.");
+      }
+    } catch (err) {
+      console.error(err);
+      setAiError("AI failed to process the query.");
+    } finally {
+      setAiLoading(false);
+    }
   };
 
-  if (loading) {
-    return <div className="h-[calc(100%-80px)] w-[calc(100%-100px)] ml-[100px] px-10 flex items-center justify-center">Loading dashboard...</div>;
-  }
+  if (loading)
+    return <div className="p-10 text-xl">Loading dashboard...</div>;
 
-  if (error) {
-    return (
-      <div className="h-[calc(100%-80px)] w-[calc(100%-100px)] ml-[100px] px-10 flex items-center justify-center">
-        <div className="text-red-500 text-2xl">
-          {error}
-          <button onClick={fetchDashboardData} className="block mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (error)
+    return <div className="p-10 text-red-500">{error}</div>;
 
   return (
     <div className="h-[calc(100%-80px)] w-[calc(100%-100px)] ml-[100px] px-10 flex flex-col gap-6 relative">
-      {/* Welcome Section */}
+      {/* HEADER */}
       <div>
         <h1 className="text-[60px] font-bold">Dashboard</h1>
         <div className="flex items-center gap-4">
-          <span className="text-[30px]">Welcome</span>
-          <span className="text-[30px] text-[#9883D5]">{user?.name}</span>
+          <span className="text-[30px]">Welcome,</span>
+          <span className="text-[30px] text-[#2e876e]">
+            {user?.name}
+          </span>
         </div>
         <div className="text-right italic text-gray-600 mt-2">
-          "A reader lives a thousand lives before he dies. The man who never reads lives only one."
-          <span className="block">— George R.R. Martin</span>
+          "A reader lives a thousand lives before he dies."
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="flex gap-10 mt-6">
-        <div className="bg-[var(--ternary-background)] text-black px-6 pt-5 pb-3 rounded-xl shadow-md w-1/6">
-          <p className="text-xl mb-3 font-medium">Books Owned</p>
-          <p className="text-4xl font-semibold text-right">{noOfBooksOwned}</p>
+      {/* STATS */}
+<div className="flex gap-10 mt-6">
+  <div className="bg-[var(--ternary-background)] px-6 pt-5 pb-3 rounded-xl shadow-md w-1/4">
+    <p className="text-xl mb-3 font-medium">My Books</p>
+    <p className="text-4xl font-semibold text-right">
+      {user?.booksOwned?.length || 0}
+    </p>
+  </div>
+
+  <div className="bg-[var(--ternary-background)] px-6 pt-5 pb-3 rounded-xl shadow-md w-1/4">
+    <p className="text-xl mb-3 font-medium">Currently Reading</p>
+    <p className="text-4xl font-semibold text-right">
+      {readingBooks.length}
+    </p>
+  </div>
+</div>
+
+      {/* 🤖 AI ASSISTANT */}
+      <div className="bg-white rounded-xl shadow-md p-6 mt-8">
+        <h2 className="text-2xl font-semibold mb-4">
+          AI Assistant
+        </h2>
+
+        <div className="flex gap-4">
+          <input
+            type="text"
+            className="border p-3 flex-1 rounded-md"
+            placeholder='Ask: "How many books do I have?"'
+            value={aiQuery}
+            onChange={(e) => setAiQuery(e.target.value)}
+          />
+
+          <button
+            onClick={handleAIQuery}
+            disabled={aiLoading}
+            className={`px-6 rounded-md text-white ${
+              aiLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[#2e876e]"
+            }`}
+          >
+            {aiLoading ? "Thinking..." : "Ask AI"}
+          </button>
         </div>
-        <div className="bg-[var(--ternary-background)] text-black px-6 pt-5 pb-3 rounded-xl shadow-md w-1/6">
-          <p className="text-xl mb-3 font-medium">Total Books</p>
-          <p className="text-4xl font-semibold text-right">{allBooks.length}</p>
-        </div>
-        <div className="bg-[var(--ternary-background)] text-black px-6 pt-5 pb-3 rounded-xl shadow-md w-1/6">
-          <p className="text-xl mb-3 font-medium">Current Reading</p>
-          <p className="text-4xl font-semibold text-right">{readingBooks.length}</p>
-        </div>
+
+        {aiError && (
+          <p className="mt-4 text-red-500">{aiError}</p>
+        )}
+
+        {/* AI RESULTS → CARDS */}
+        {aiResult.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {aiResult.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-green-50 shadow-md rounded-lg p-4 flex flex-col gap-2"
+              >
+                {Object.entries(item)
+                  .filter(([key]) => key !== "_id")
+                  .map(([key, value]) => (
+                    <p key={key} className="text-l mb-3">
+                      <span className="font-semibold capitalize">
+                        {key.replace(/_/g, " ")}:
+                      </span>{" "}
+                      {value}
+                    </p>
+                  ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Continue Reading Section */}
+      {/* CONTINUE READING */}
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Continue Reading</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Continue Reading
+        </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {readingBooks.length > 0 ? (
-            readingBooks.map(book => (
-              <ContinueLearningBookCard key={book._id} book={book} onClick={handleContinueReading} showProgress />
+            readingBooks.map((book) => (
+              <ContinueLearningBookCard
+                key={book._id}
+                book={book}
+                onClick={() => navigate("/mylibrary")}
+                showProgress
+              />
             ))
           ) : (
-            <div className="col-span-full text-center text-gray-500 py-8">
-              <p className="text-lg">No books currently being read</p>
-              <p className="text-sm mt-2">Start reading a book to see it here!</p>
-            </div>
+            <p className="text-gray-500">
+              No books currently being read
+            </p>
           )}
         </div>
-      </div>
-
-      {/* Footer Date */}
-      <div className="mt-8 text-right text-gray-500">
-        {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} | {new Date().toLocaleDateString('en-US', { weekday: 'long', hour: '2-digit', minute: '2-digit' })}
       </div>
     </div>
   );

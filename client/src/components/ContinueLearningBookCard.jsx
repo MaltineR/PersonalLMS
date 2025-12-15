@@ -43,7 +43,7 @@ const ContinueLearningBookCard = ({ book = {}, onClick }) => {
       <div className="p-5 flex flex-col flex-grow">
        
         <div 
-          className="mb-4 text-[#9883D5] transition-transform duration-300 hover:scale-110"
+          className="mb-4 text-[#2e876e] transition-transform duration-300 hover:scale-110"
           style={{ transformOrigin: 'center' }}
         >
           <Album size={32} />

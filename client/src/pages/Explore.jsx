@@ -7,7 +7,7 @@ const RequestBookCard = ({ book }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 w-80 flex-shrink-0 border border-gray-200 hover:shadow-lg transition-shadow">
       <div className="flex gap-4">
-        <div className="w-20 h-28 bg-gray-200 rounded-md flex items-center justify-center">
+        <div className="w-20 h-28 bg-green-100 rounded-md flex items-center justify-center">
           {book.coverImage ? (
             <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover rounded-md" />
           ) : (
@@ -25,7 +25,7 @@ const RequestBookCard = ({ book }) => {
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
             <User size={14} />
-            <span>{book.owner?.name || 'Anonymous'}</span>
+            <span>{book.owner?.name || ''}</span>
           </div>
           {book.location && (
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">

@@ -43,7 +43,7 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/book', bookRouter);
 app.use('/api/v1/borrow', borrowRouter);
 app.use('/api/v1/test', emailTestRouter);
-app.use('/api/v1/admin', adminRouter);  // ✅ IMPORTANT
+app.use('/api/v1/admin', adminRouter);  
 
 app.use(passport.initialize());
 app.use(passport.session());
