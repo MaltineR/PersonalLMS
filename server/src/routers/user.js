@@ -1,10 +1,15 @@
 // routes/user.js
 const express = require('express');
-const fetch = require('node-fetch'); // ✅ REQUIRED
 const authMiddleware = require('../middlewares/authMiddleware');
 const userRouter = express.Router();
 const User = require('../models/UserModel');
 const Book = require('../models/BookModel');
+
+// =======================
+// DYNAMIC FETCH IMPORT FOR NODE-FETCH v3+
+// =======================
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 // =======================
 // TEST ENDPOINT
@@ -50,13 +55,11 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
     const lowerQuery = query.toLowerCase();
 
     // =======================
-    // ✅ RULE-BASED FALLBACKS
+    // RULE-BASED FALLBACKS
     // =======================
     if (lowerQuery.includes('how many books')) {
       const count = await Book.countDocuments({ owner: userId });
-      return res.json({
-        data: [{ label: 'Books Owned', value: count }]
-      });
+      return res.json({ data: [{ label: 'Books Owned', value: count }] });
     }
 
     if (lowerQuery.includes('list my books')) {
@@ -76,7 +79,7 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
 You are an AI assistant for a single library user.
 
 User books:
-${books.map(b => `- ${b.title} ($${b.price})`).join('\n')}
+${books.map((b) => `- ${b.title} ($${b.price})`).join('\n')}
 
 Answer ONLY in valid JSON.
 
@@ -93,13 +96,11 @@ User question: "${query}"
       body: JSON.stringify({
         model: 'llama3.1',
         prompt,
-        stream: false
-      })
+        stream: false,
+      }),
     });
 
-    if (!response.ok) {
-      throw new Error('Ollama API failed');
-    }
+    if (!response.ok) throw new Error('Ollama API failed');
 
     const data = await response.json();
 
@@ -115,9 +116,7 @@ User question: "${query}"
     // FORMAT RESPONSE
     // =======================
     if (aiOutput.type === 'count') {
-      return res.json({
-        data: [{ label: 'Books Owned', value: aiOutput.count }]
-      });
+      return res.json({ data: [{ label: 'Books Owned', value: aiOutput.count }] });
     }
 
     if (aiOutput.type === 'books') {
@@ -125,10 +124,62 @@ User question: "${query}"
     }
 
     res.json({ data: [] });
-
   } catch (err) {
     console.error('User AI query error:', err);
     res.status(500).json({ error: 'AI query failed' });
+  }
+});
+
+// =======================
+// 🤖 AI RECOMMENDATIONS (USER)
+// =======================
+userRouter.get('/recommendations', authMiddleware, async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId).populate('booksOwned');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const books = user.booksOwned || [];
+
+    if (books.length === 0) {
+      return res.json({ data: [], message: 'No books to base recommendations on.' });
+    }
+
+    // Generate prompt for Ollama to suggest similar books/genres
+    const prompt = `
+You are an AI assistant recommending books for a single user's personal library.
+
+The user has read the following books:
+${books.map((b) => `- ${b.title} (Genre: ${b.genre || 'Unknown'})`).join('\n')}
+
+Suggest 5 books (title and genre) that are similar to what they like.
+Answer ONLY in JSON like:
+{ "recommendations": [ { "title": "...", "genre": "..." }, ... ] }
+`;
+
+    const response = await fetch('http://localhost:11434/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'llama3.1', prompt, stream: false }),
+    });
+
+    if (!response.ok) throw new Error('Ollama API failed');
+
+    const data = await response.json();
+
+    let recommendations;
+    try {
+      recommendations = JSON.parse(data.response.trim()).recommendations || [];
+    } catch (err) {
+      console.error('Invalid AI JSON:', data.response);
+      return res.json({ data: [], message: 'Failed to parse AI recommendations.' });
+    }
+
+    res.json({ data: recommendations });
+  } catch (err) {
+    console.error('User AI recommendation error:', err);
+    res.status(500).json({ error: 'AI recommendation failed' });
   }
 });
 

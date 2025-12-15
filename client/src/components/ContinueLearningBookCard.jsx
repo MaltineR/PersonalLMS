@@ -51,7 +51,7 @@ const ContinueLearningBookCard = ({ book = {}, onClick }) => {
 
         
         <h3 
-          className="text-xl font-bold mb-2 truncate transition-colors duration-200 hover:text-[#9883D5]"
+          className="text-xl font-bold mb-2 truncate transition-colors duration-200 hover:text-[#2e876e]"
         >
           {title}
         </h3>
