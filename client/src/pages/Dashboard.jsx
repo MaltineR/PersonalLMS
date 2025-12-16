@@ -141,7 +141,24 @@ function Dashboard() {
           <p className="text-4xl font-semibold text-right">{readingBooks.length}</p>
         </div>
       </div>
-
+{/* CONTINUE READING */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Continue Reading</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {readingBooks.length > 0 ? (
+            readingBooks.map((book) => (
+              <ContinueLearningBookCard
+                key={book._id}
+                book={book}
+                onClick={() => navigate("/mylibrary")}
+                showProgress
+              />
+            ))
+          ) : (
+            <p className="text-gray-500">No books currently being read</p>
+          )}
+        </div>
+      </div>
       {/* 🤖 AI ASSISTANT */}
       <div className="bg-white rounded-xl shadow-md p-6 mt-8">
         <h2 className="text-2xl font-semibold mb-4">AI Assistant</h2>
@@ -195,37 +212,18 @@ function Dashboard() {
         {!recLoading && !recError && recommendations.length === 0 && (
           <p>No recommendations yet.</p>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-          {recommendations.map((book, idx) => (
-            <div
-              key={idx}
-              className="bg-blue-50 shadow-md rounded-lg p-4 flex flex-col gap-2"
-            >
-              <p className="font-semibold text-lg">{book.title}</p>
-              <p className="italic text-gray-700">{book.author}</p>
-              {book.reason && <p className="text-sm">{book.reason}</p>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CONTINUE READING */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Continue Reading</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {readingBooks.length > 0 ? (
-            readingBooks.map((book) => (
-              <ContinueLearningBookCard
-                key={book._id}
-                book={book}
-                onClick={() => navigate("/mylibrary")}
-                showProgress
-              />
-            ))
-          ) : (
-            <p className="text-gray-500">No books currently being read</p>
-          )}
-        </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+  {recommendations.map((book, idx) => (
+    <div
+      key={idx}
+      className="bg-blue-50 shadow-md rounded-lg p-4 flex flex-col gap-2"
+    >
+      <p className="font-semibold text-lg">{book.title}</p>
+      <p className="italic text-gray-700">{book.genre}</p>
+      {book.reason && <p className="text-sm">{book.reason}</p>}
+    </div>
+  ))}
+</div>
       </div>
     </div>
   );

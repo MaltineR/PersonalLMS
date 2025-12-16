@@ -133,6 +133,7 @@ User question: "${query}"
 // =======================
 // 🤖 AI RECOMMENDATIONS (USER)
 // =======================
+// 🤖 AI RECOMMENDATIONS (USER)
 userRouter.get('/recommendations', authMiddleware, async (req, res) => {
   const userId = req.userId;
 
@@ -146,16 +147,25 @@ userRouter.get('/recommendations', authMiddleware, async (req, res) => {
       return res.json({ data: [], message: 'No books to base recommendations on.' });
     }
 
-    // Generate prompt for Ollama to suggest similar books/genres
+    // Prompt asking for title, genre, and reason
     const prompt = `
 You are an AI assistant recommending books for a single user's personal library.
 
 The user has read the following books:
 ${books.map((b) => `- ${b.title} (Genre: ${b.genre || 'Unknown'})`).join('\n')}
 
-Suggest 5 books (title and genre) that are similar to what they like.
+Suggest 5 books similar to what they like. For each recommendation, include:
+- title
+- genre
+- reason: a one-line explanation why this book is recommended
+
 Answer ONLY in JSON like:
-{ "recommendations": [ { "title": "...", "genre": "..." }, ... ] }
+{
+  "recommendations": [
+    { "title": "...", "genre": "...", "reason": "..." },
+    ...
+  ]
+}
 `;
 
     const response = await fetch('http://localhost:11434/api/generate', {
@@ -182,5 +192,6 @@ Answer ONLY in JSON like:
     res.status(500).json({ error: 'AI recommendation failed' });
   }
 });
+
 
 module.exports = userRouter;
