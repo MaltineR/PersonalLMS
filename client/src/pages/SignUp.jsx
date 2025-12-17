@@ -14,18 +14,18 @@ const SignUp = () => {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
 
-  // Email validation function
+  
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Password validation function
+  
   const validatePassword = (password) => {
     return password.length >= 8;
   };
 
-  // Form validation
+  
   const validateForm = () => {
     const errors = {};
     
@@ -60,7 +60,7 @@ const SignUp = () => {
       [name]: value
     }));
     
-    // Clear field error when user starts typing
+    
     if (fieldErrors[name]) {
       setFieldErrors(prev => ({
         ...prev,
@@ -68,7 +68,7 @@ const SignUp = () => {
       }));
     }
     
-    // Clear general error when user makes changes
+    
     if (error) {
       setError('');
     }
@@ -78,7 +78,7 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
     
-    // Validate form before submission
+    
     if (!validateForm()) {
       return;
     }
@@ -95,7 +95,7 @@ const SignUp = () => {
 
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
-        // Show success message or redirect
+        
         window.location.href = '/signin';
       } else {
         setError(response.data.message || 'Registration failed');
@@ -104,12 +104,12 @@ const SignUp = () => {
       console.error('Registration error:', err);
       
       if (err.response) {
-        // Server responded with error status
+        
         const statusCode = err.response.status;
         const errorMessage = err.response.data?.message || err.response.data?.error;
         
         if (statusCode === 400) {
-          // Bad request - validation errors
+          
           if (errorMessage?.includes('email')) {
             setFieldErrors(prev => ({ ...prev, email: errorMessage }));
           } else if (errorMessage?.includes('password')) {
@@ -118,7 +118,7 @@ const SignUp = () => {
             setError(errorMessage || 'Invalid input. Please check your information.');
           }
         } else if (statusCode === 409 || statusCode === 404) {
-          // User already exists (your backend returns 404, but 409 would be more appropriate)
+          
           setError('An account with this email already exists. Please try signing in instead.');
         } else if (statusCode === 500) {
           setError('Server error. Please try again later.');
@@ -126,10 +126,10 @@ const SignUp = () => {
           setError(errorMessage || 'Registration failed. Please try again.');
         }
       } else if (err.request) {
-        // Network error
+        
         setError('Network error. Please check your connection and try again.');
       } else {
-        // Other error
+        
         setError('An unexpected error occurred. Please try again.');
       }
     } finally {

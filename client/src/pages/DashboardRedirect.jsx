@@ -7,7 +7,7 @@ export default function DashboardRedirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) return; // wait until user is set
+    if (!user) return; 
 
     // Redirect based on role
     if (user.role === "admin") {

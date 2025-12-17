@@ -29,12 +29,12 @@ function AppContent() {
       {!shouldHideSidebar && <TopBar />}
 
       <Routes>
-        {/* Public Routes */}
+       
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
 
-        {/* Role-based Redirect */}
+        
         <Route path="/dashboardredirect" element={<DashboardRedirect />} />
 
         {/* User Routes */}
@@ -47,7 +47,7 @@ function AppContent() {
         <Route path="/admin/books" element={<AdminBooks />} />
         <Route path="/admin/users" element={<AdminUsers />} />
 
-        {/* Error */}
+        
         <Route path="*" element={<Error />} />
       </Routes>
     </div>

@@ -5,15 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-/**
- * Manually trigger reminder email
- * Body expects:
- * {
- *   userId,
- *   bookTitle,
- *   dueDate
- * }
- */
+
 router.post('/send-reminder', authMiddleware, async (req, res) => {
   try {
     const { userId, bookTitle, dueDate } = req.body;

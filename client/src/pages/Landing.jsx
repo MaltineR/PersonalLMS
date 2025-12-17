@@ -1,7 +1,9 @@
 import { Mail, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
+import myLibraryImg from "../assets/Mylibrary.PNG";
+import myRecommendedImg from "../assets/Recommended.PNG"
 
-// --- Hero Section with floating books animation ---
+
 const FullScreenHero = () => (
   <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative z-10 overflow-hidden">
     {[...Array(5)].map((_, i) => (
@@ -44,7 +46,7 @@ const FullScreenHero = () => (
   </section>
 );
 
-// --- First Laptop Feature ---
+
 const FirstLaptopFeature = () => (
   <section className="py-24 md:py-32 container mx-auto px-6 flex flex-col items-center text-center">
     <motion.div
@@ -62,7 +64,7 @@ const FirstLaptopFeature = () => (
         your next favorite book with our intuitive dashboard.
       </p>
       <img
-        src="/laptop1.png"
+        src={myLibraryImg}
         alt="Dashboard Preview"
         className="rounded-lg shadow-2xl w-full max-w-4xl mx-auto"
       />
@@ -70,7 +72,7 @@ const FirstLaptopFeature = () => (
   </section>
 );
 
-// --- Community Feature ---
+
 const CommunityFeature = () => (
   <section className="py-24 md:py-32 relative z-10 overflow-hidden">
     <div className="flex flex-col md:flex-row items-center">
@@ -82,10 +84,10 @@ const CommunityFeature = () => (
         className="w-full md:w-5/12 text-center md:text-left px-6 md:pl-12 lg:pl-24"
       >
         <h2 className="text-[var(--text-primary)] font-semibold text-3xl md:text-5xl leading-tight">
-          Building <br />
-          <span className="text-[var(--secondary)]">communities</span> <br />
-          through shared <br />
-          reading experiences.
+          A page of<br />
+          <span className="text-[var(--secondary)]">Recommended for you</span> <br />
+           based on your<br />
+           reading habits.
         </h2>
       </motion.div>
       <motion.div
@@ -96,8 +98,8 @@ const CommunityFeature = () => (
         className="w-full md:w-7/12 mt-12 md:mt-0"
       >
         <img
-          src="/laptop2.png"
-          alt="My Library and community features"
+          src={myRecommendedImg}
+          alt="Recommended features"
           className="w-full rounded-l-lg shadow-2xl"
         />
       </motion.div>
@@ -105,7 +107,7 @@ const CommunityFeature = () => (
   </section>
 );
 
-// --- Footer ---
+
 const PageFooter = () => (
   <footer className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white pt-10 pb-6 px-6 md:px-12 mt-auto">
     <div className="text-center mb-4">
@@ -133,11 +135,11 @@ const PageFooter = () => (
   </footer>
 );
 
-// --- Main Landing Page ---
+
 function LandingPage() {
   return (
     <div className="min-h-screen w-full bg-[var(--background)] font-['Manrope'] flex flex-col">
-      {/* Decorative Blobs */}
+      
       <div className="absolute -top-40 -left-52 w-[500px] h-[500px] bg-[var(--secondary)] rounded-full opacity-30 z-0"></div>
       <div className="absolute -bottom-40 -left-44 w-[378px] h-[189px] bg-[var(--secondary)] rounded-t-full opacity-30 z-0"></div>
       <div className="absolute -top-40 right-0 w-[500px] h-[500px] bg-[var(--secondary)] rounded-full opacity-20 z-0"></div>

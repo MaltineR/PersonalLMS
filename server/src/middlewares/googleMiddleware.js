@@ -1,7 +1,7 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const User = require('../models/UserModel'); // Update this path to your User model
+const User = require('../models/UserModel'); 
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -35,22 +35,22 @@ passport.use(
                     googleAvatar = "https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico";
                }
 
-               // Check if user already exists in database
+               
                let user = await User.findOne({ email: googleEmail });
 
                if (user) {
-                   // User exists, update avatar if needed
+                   
                    if (user.avatar !== googleAvatar) {
                        user.avatar = googleAvatar;
                        await user.save();
                    }
                } else {
-                   // Create new user
+                   
                    user = new User({
                        name: googleName,
                        email: googleEmail,
                        avatar: googleAvatar,
-                       password: 'google-oauth', // Placeholder password for Google users
+                       password: 'google-oauth', 
                        authProvider: 'google',
                        googleId: profile.id
                    });

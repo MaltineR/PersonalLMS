@@ -14,7 +14,7 @@ bookRouter.get('/', authMiddleware, (req, res) => {
     }
 });
 
-// Add a new book
+
 bookRouter.post('/addbook', authMiddleware, async (req, res) => {
   try {
     const {
@@ -77,7 +77,7 @@ bookRouter.get('/getallbooks', authMiddleware, async (req, res) => {
 });
 
 
-// Edit a book
+
 bookRouter.put('/books/:id', authMiddleware, async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -98,7 +98,7 @@ bookRouter.put('/books/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Delete a book
+
 bookRouter.delete('/books/:id', authMiddleware, async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -133,7 +133,7 @@ bookRouter.get('/getpublicbooks', authMiddleware, async (req, res) => {
   }
 });
 
-// Dashboard stats
+
 bookRouter.get('/dashboard/stats', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
@@ -153,7 +153,7 @@ bookRouter.get('/dashboard/stats', authMiddleware, async (req, res) => {
   }
 });
 
-// Books currently being read
+
 bookRouter.get('/dashboard/reading', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;

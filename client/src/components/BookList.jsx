@@ -1,4 +1,4 @@
-// client/components/BookList.jsx
+
 import BookCard from "./BookCard";
 
 function BookList({ books, onDelete, onUpdate, onTogglePublic }) {

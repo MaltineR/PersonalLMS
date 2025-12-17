@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const { setUser } = useContext(AuthContext);
-  const navigate = useNavigate(); // Use React Router navigation
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -50,9 +50,9 @@ const SignIn = () => {
 
       if (response.data?.token && response.data.user) {
         localStorage.setItem('token', response.data.token);
-        setUser(response.data.user); // Set user in context
+        setUser(response.data.user); 
 
-        // ✅ Direct role-based redirect
+       
         if (response.data.user.role === 'admin') {
           navigate('/admin');
         } else {
@@ -88,7 +88,7 @@ const SignIn = () => {
   };
 
   const handleSignupClick = () => {
-    navigate('/signup'); // Use React Router navigation
+    navigate('/signup'); 
   };
 
   return (

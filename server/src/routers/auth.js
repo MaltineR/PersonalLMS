@@ -46,7 +46,7 @@ authRouter.post('/login', async (req, res) => {
   }
 });
 
-// REGISTER
+
 authRouter.post('/register', async (req, res) => {
   try {
     const { name, email, password, location } = req.body;
@@ -59,7 +59,7 @@ authRouter.post('/register', async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Only check local users to avoid conflict with Google accounts
+    
     const existingUser = await User.findOne({ email: normalizedEmail, authProvider: 'local' });
     if (existingUser) return res.status(409).json({ message: 'Email already exists. Please sign in.' });
 

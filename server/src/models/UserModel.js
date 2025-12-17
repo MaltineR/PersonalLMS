@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     noofbooksLent: { type: Number, default: 0 },
     totalbooksread: { type: Number, default: 0 },
 
-    // <<< NEW FIELD >>>
+    
     role: {
         type: String,
         enum: ['user', 'admin'],
@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Indexes
+
 userSchema.index({ email: 1, authProvider: 1 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

@@ -10,7 +10,7 @@ function SideBar() {
 
     const [activeItem, setActiveItem] = useState(0);
 
-    // Define menu based on user role
+    
     let menuItems = [];
 
     if (user?.role === "admin") {

@@ -46,7 +46,7 @@ function BookCard({ book, onDelete, onUpdate, onTogglePublic, isBorrowed }) {
     }
   };
 
-  // Determine badge color based on readingstatus
+  
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case "read":

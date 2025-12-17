@@ -6,7 +6,7 @@ import { AuthContext } from "../hooks/AuthHOC";
 const AdminBooks = () => {
   const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
-  const [search, setSearch] = useState(""); // 🔍 search state
+  const [search, setSearch] = useState(""); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,7 +47,7 @@ const AdminBooks = () => {
     }
   };
 
-  // 🔍 Filter books based on search
+  
   const filteredBooks = books.filter(
     b =>
       b.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -62,7 +62,7 @@ const AdminBooks = () => {
     <div className="h-[calc(100%-80px)] w-[calc(100%-100px)] ml-[100px] px-10 flex flex-col gap-6 relative">
       <h1 className="text-[40px] font-bold">Manage Books</h1>
 
-      {/* 🔍 Search input */}
+      
       <input
         type="text"
         placeholder="Search by title, author, or genre..."
@@ -85,7 +85,7 @@ const AdminBooks = () => {
             <span>{b.genre}</span>
             <span>{b.owner?.name || "—"}</span>
 
-            {/* Status badge */}
+            
             <span
               className={`px-3 py-1 rounded-full text-sm w-fit capitalize
                 ${

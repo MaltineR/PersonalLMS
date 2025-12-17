@@ -7,9 +7,7 @@ const Book = require("../models/BookModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const isAdmin = require("../middlewares/isAdmin");
 
-// =======================
-// Get all users
-// =======================
+
 router.get("/users", authMiddleware, isAdmin, async (req, res) => {
   try {
     const users = await User.find().select("-password");
@@ -20,9 +18,7 @@ router.get("/users", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
-// Get all books
-// =======================
+
 router.get("/books", authMiddleware, isAdmin, async (req, res) => {
   try {
     const books = await Book.find().populate("owner", "name email");
@@ -33,9 +29,7 @@ router.get("/books", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
-// Delete a user
-// =======================
+
 router.delete("/users/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
@@ -46,9 +40,7 @@ router.delete("/users/:id", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
-// Delete a book
-// =======================
+
 router.delete("/books/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     await Book.findByIdAndDelete(req.params.id);
@@ -59,9 +51,7 @@ router.delete("/books/:id", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
-// Library Insights
-// =======================
+
 router.get("/library-insights", authMiddleware, isAdmin, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -95,7 +85,7 @@ router.get("/library-insights", authMiddleware, isAdmin, async (req, res) => {
       { $project: { name: 1, email: 1, booksRead: 1 } }
     ]);
 
-    // Genres breakdown
+    // Genres 
     const allBooks = await Book.find();
     const genreCounts = {};
     allBooks.forEach(b => {
@@ -118,9 +108,7 @@ router.get("/library-insights", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
-// User Insights
-// =======================
+
 router.get("/user-insights/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("name email");
@@ -142,14 +130,14 @@ router.get("/user-insights/:id", authMiddleware, isAdmin, async (req, res) => {
 
     const insights = [];
 
-    // Reading habits by pages
+    
     if (avgPages < 200) insights.push(`${user.name} tends to read short books`);
     else if (avgPages > 400) insights.push(`${user.name} prefers long books`);
 
-    // Completion habit
+    
     if (booksRead / totalBooks > 0.6) insights.push(`${user.name} usually finishes their books`);
 
-    // Top genre
+    
     const genreCounts = {};
     books.forEach(b => {
       if (b.genre) genreCounts[b.genre] = (genreCounts[b.genre] || 0) + 1;
@@ -172,9 +160,8 @@ router.get("/user-insights/:id", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// =======================
 // AI query
-// =======================
+
 router.post('/ai-query', authMiddleware, isAdmin, async (req, res) => {
   const { query } = req.body;
 
@@ -204,7 +191,7 @@ router.post('/ai-query', authMiddleware, isAdmin, async (req, res) => {
       return res.json({ data: [], message: 'Query not recognized. Use standard queries.' });
     }
 
-    // Execute Instruction
+    
     let result;
 
     switch (instruction.type) {

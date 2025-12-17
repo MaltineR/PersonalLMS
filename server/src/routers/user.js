@@ -1,26 +1,20 @@
-// routes/user.js
+
 const express = require('express');
 const authMiddleware = require('../middlewares/authMiddleware');
 const userRouter = express.Router();
 const User = require('../models/UserModel');
 const Book = require('../models/BookModel');
 
-// =======================
-// DYNAMIC FETCH IMPORT FOR NODE-FETCH v3+
-// =======================
+
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-// =======================
-// TEST ENDPOINT
-// =======================
+
 userRouter.get('/', authMiddleware, (req, res) => {
   res.send('User endpoint is working!');
 });
 
-// =======================
-// GET CURRENT USER
-// =======================
+
 userRouter.get('/me', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
@@ -40,9 +34,7 @@ userRouter.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
-// =======================
-// 🤖 AI QUERY AGENT (USER)
-// =======================
+
 userRouter.post('/ai-query', authMiddleware, async (req, res) => {
   const { query } = req.body;
   const userId = req.userId;
@@ -54,9 +46,7 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
 
     const lowerQuery = query.toLowerCase();
 
-    // =======================
-    // RULE-BASED FALLBACKS
-    // =======================
+    
     if (lowerQuery.includes('how many books')) {
       const count = await Book.countDocuments({ owner: userId });
       return res.json({ data: [{ label: 'Books Owned', value: count }] });
@@ -67,9 +57,7 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
       return res.json({ data: books });
     }
 
-    // =======================
-    // AI PART (OLLAMA)
-    // =======================
+    // Ollama
     const user = await User.findById(userId).populate('booksOwned');
     if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -112,9 +100,7 @@ User question: "${query}"
       return res.json({ data: [] });
     }
 
-    // =======================
-    // FORMAT RESPONSE
-    // =======================
+    
     if (aiOutput.type === 'count') {
       return res.json({ data: [{ label: 'Books Owned', value: aiOutput.count }] });
     }
@@ -130,10 +116,7 @@ User question: "${query}"
   }
 });
 
-// =======================
-// 🤖 AI RECOMMENDATIONS (USER)
-// =======================
-// 🤖 AI RECOMMENDATIONS (USER)
+// Recommendation
 userRouter.get('/recommendations', authMiddleware, async (req, res) => {
   const userId = req.userId;
 
@@ -147,7 +130,7 @@ userRouter.get('/recommendations', authMiddleware, async (req, res) => {
       return res.json({ data: [], message: 'No books to base recommendations on.' });
     }
 
-    // Prompt asking for title, genre, and reason
+    
     const prompt = `
 You are an AI assistant recommending books for a single user's personal library.
 
