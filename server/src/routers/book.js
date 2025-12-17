@@ -3,9 +3,8 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const bookRouter = express.Router();
 const Book = require('../models/BookModel');
 const User = require('../models/UserModel');
-const BorrowModel = require('../models/BorrowModel');
 
-// Test endpoint
+
 bookRouter.get('/', authMiddleware, (req, res) => {
     try {
         res.send('Book endpoint is working!');
@@ -59,7 +58,7 @@ bookRouter.post('/addbook', authMiddleware, async (req, res) => {
   }
 });
 
-// Get all owned + borrowed books
+
 bookRouter.get('/getallbooks', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
@@ -77,23 +76,6 @@ bookRouter.get('/getallbooks', authMiddleware, async (req, res) => {
   }
 });
 
-// Get borrowed books
-bookRouter.get('/getborrowedbooks', authMiddleware, async (req, res) => {
-  try {
-    const userId = req.userId;
-    const borrowRequests = await BorrowModel.find({
-      fromUser: userId,
-      status: 'approved'
-    }).populate('book');
-
-    const borrowedBooks = borrowRequests.map(request => request.book);
-    res.status(200).json({ books: borrowedBooks });
-
-  } catch (err) {
-    console.error('Error fetching borrowed books:', err);
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
 
 // Edit a book
 bookRouter.put('/books/:id', authMiddleware, async (req, res) => {
@@ -125,7 +107,7 @@ bookRouter.delete('/books/:id', authMiddleware, async (req, res) => {
 
     if (!deletedBook) return res.status(404).json({ error: 'Book not found or not owned by user' });
 
-    // Remove from user's booksOwned array
+    
     await User.findByIdAndUpdate(req.userId, { $pull: { booksOwned: bookId } });
 
     res.status(200).json({ message: 'Book deleted successfully' });
@@ -135,7 +117,7 @@ bookRouter.delete('/books/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Get public books
+
 bookRouter.get('/getpublicbooks', authMiddleware, async (req, res) => {
   try {
     const books = await Book.find({

@@ -13,13 +13,13 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🤖 AI STATES
+  
   const [aiQuery, setAiQuery] = useState("");
   const [aiResult, setAiResult] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState(null);
 
-  // 🤖 AI RECOMMENDATIONS
+  
   const [recommendations, setRecommendations] = useState([]);
   const [recLoading, setRecLoading] = useState(false);
   const [recError, setRecError] = useState(null);
@@ -115,7 +115,7 @@ function Dashboard() {
 
   return (
     <div className="h-[calc(100%-80px)] w-[calc(100%-100px)] ml-[100px] px-10 flex flex-col gap-6 relative">
-      {/* HEADER */}
+      
       <div>
         <h1 className="text-[60px] font-bold">Dashboard</h1>
         <div className="flex items-center gap-4">
@@ -127,7 +127,7 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* STATS */}
+      
       <div className="flex gap-10 mt-6">
         <div className="bg-[var(--ternary-background)] px-6 pt-5 pb-3 rounded-xl shadow-md w-1/4">
           <p className="text-xl mb-3 font-medium">My Books</p>
@@ -141,7 +141,7 @@ function Dashboard() {
           <p className="text-4xl font-semibold text-right">{readingBooks.length}</p>
         </div>
       </div>
-{/* CONTINUE READING */}
+{/* Continue Reading Card */}
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Continue Reading</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -159,7 +159,30 @@ function Dashboard() {
           )}
         </div>
       </div>
-      {/* 🤖 AI ASSISTANT */}
+     
+
+      {/* Recommended books */}
+      <div className="bg-white rounded-xl shadow-md p-6 mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Recommended for You</h2>
+        {recLoading && <p className="italic">Generating recommendations...</p>}
+        {recError && <p className="text-red-500">{recError}</p>}
+        {!recLoading && !recError && recommendations.length === 0 && (
+          <p>No recommendations yet.</p>
+        )}
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+  {recommendations.map((book, idx) => (
+    <div
+      key={idx}
+      className="bg-green-50 shadow-md rounded-lg p-4 flex flex-col gap-2"
+    >
+      <p className="font-semibold text-lg">{book.title}</p>
+      <p className="italic text-gray-700">{book.genre}</p>
+      {book.reason && <p className="text-sm">{book.reason}</p>}
+    </div>
+  ))}
+</div>
+      </div>
+       {/* AI search */}
       <div className="bg-white rounded-xl shadow-md p-6 mt-8">
         <h2 className="text-2xl font-semibold mb-4">AI Assistant</h2>
         <div className="flex gap-4">
@@ -202,28 +225,6 @@ function Dashboard() {
             ))}
           </div>
         )}
-      </div>
-
-      {/* RECOMMENDED BOOKS */}
-      <div className="bg-white rounded-xl shadow-md p-6 mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Recommended for You</h2>
-        {recLoading && <p className="italic">Generating recommendations...</p>}
-        {recError && <p className="text-red-500">{recError}</p>}
-        {!recLoading && !recError && recommendations.length === 0 && (
-          <p>No recommendations yet.</p>
-        )}
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-  {recommendations.map((book, idx) => (
-    <div
-      key={idx}
-      className="bg-blue-50 shadow-md rounded-lg p-4 flex flex-col gap-2"
-    >
-      <p className="font-semibold text-lg">{book.title}</p>
-      <p className="italic text-gray-700">{book.genre}</p>
-      {book.reason && <p className="text-sm">{book.reason}</p>}
-    </div>
-  ))}
-</div>
       </div>
     </div>
   );

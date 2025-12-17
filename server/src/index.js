@@ -15,11 +15,10 @@ const db = mongoose.connect(mongoUrl);
 const authRouter = require('./routers/auth');
 const userRouter = require('./routers/user');
 const bookRouter = require('./routers/book');
-const borrowRouter = require('./routers/Borrow');
 const emailTestRouter = require('./routers/emailTest');
-const adminRouter = require('./routers/admin');   // ✅ ADDED THIS
+const adminRouter = require('./routers/admin');   
 
-const scheduleReminders = require('./reminderScheduler');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,7 +40,6 @@ app.use(session({
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/book', bookRouter);
-app.use('/api/v1/borrow', borrowRouter);
 app.use('/api/v1/test', emailTestRouter);
 app.use('/api/v1/admin', adminRouter);  
 
@@ -57,7 +55,6 @@ app.get('/', (_req, res) => {
   }
 });
 
-scheduleReminders();
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

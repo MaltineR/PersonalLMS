@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/UserModel');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-// LOGIN
+// Login
 authRouter.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -15,7 +15,7 @@ authRouter.post('/login', async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Only check local users for login
+    
     const user = await User.findOne({ email: normalizedEmail, authProvider: 'local' });
     if (!user) return res.status(404).json({ message: 'No account found with this email. Please sign up first.' });
 
