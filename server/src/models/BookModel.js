@@ -8,7 +8,6 @@ const bookSchema = new mongoose.Schema({
   pagesread: { type: Number, required: true, min: 1 },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   status: { type: Boolean, default: true },
-  sharedWith: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   price: { type: Number, default: 0 },
   public: { type: Boolean, default: false },
   readingstatus: {

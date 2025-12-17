@@ -14,7 +14,7 @@ const readingProgressSchema = new mongoose.Schema({
     type: Number
   },
   totalPages: {
-    type: Number // optional, only if not in book schema
+    type: Number 
   },
   progressPercent: {
     type: Number
