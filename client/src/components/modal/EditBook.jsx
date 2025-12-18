@@ -129,14 +129,6 @@ const EditPage = ({ book, onSubmit, onClose }) => {
             <input type="number" name="price" value={formData.price} onChange={handleInputChange} className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#9883D5]" placeholder="Price" min="0" step="0.01" />
           </div>
 
-          {/* Public checkbox */}
-          <div className="mb-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" name="public" checked={formData.public} onChange={handleInputChange} className="w-4 h-4 text-[#9883D5] border-2 border-gray-300 rounded focus:ring-[#9883D5] focus:ring-2" />
-              <span className="font-semibold text-gray-800">Make this book public</span>
-            </label>
-          </div>
-
           {/* Reading status */}
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Status</label>

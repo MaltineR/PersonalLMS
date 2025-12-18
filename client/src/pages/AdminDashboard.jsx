@@ -104,7 +104,7 @@ const AdminDashboard = () => {
     });
     setInsights(res.data);
 
-    if (selectedUser) loadUserInsights(selectedUser); // load user insights too
+    if (selectedUser) loadUserInsights(selectedUser); 
   };
 
   // User Insights

@@ -165,19 +165,7 @@ const IssueBook = ({ onClose, onSubmit }) => {
             />
           </div>
 
-          {/* Public Status */}
-          <div className="mb-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                name="public"
-                checked={formData.public}
-                onChange={handleInputChange}
-                className="w-4 h-4 text-[#9883D5] border-2 border-gray-300 rounded focus:ring-[#9883D5] focus:ring-2"
-              />
-              <span className="font-semibold text-gray-800">Make this book public</span>
-            </label>
-          </div>
+          
 
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-gray-800">Status</label>

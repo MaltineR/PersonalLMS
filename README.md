@@ -1,4 +1,4 @@
-# # Library Management System
+# Library Management System
 
 The Library Management System is a comprehensive web application that allows users to manage their personal book collections. It features user authentication, CRUD operations for books, an admin dashboard, and AI-powered analytics using natural language processing.
 
@@ -68,7 +68,6 @@ PORT=5000
 MONGODB_URI=your_mongodb_connection_string_here
 JWT_SECRET=your_jwt_secret_key_here
 OLLAMA_API_URL=http://localhost:11434
-NODE_ENV=development
 ```
 Start the server:
 ```bash
@@ -97,30 +96,33 @@ The client will run on `http://localhost:5173` (or another port if 5173 is busy)
 
 Open your browser and navigate to `http://localhost:5173`
 
+
+For demonstration and testing purposes, the application includes a default admin account.
+
+Admin Credentials:
+
+Email: admin@gmail.com
+
+Password: admin123
+
+Use these credentials to log in and access the Admin Dashboard, where you can manage all users and books.
+
+
 ## Screenshots
 
-### Home Page
-![Home Page](./screenshots/home.png)
+### User Library
+![User Library](./screenshots/userlibrary.png)
 
-### User Dashboard
-![User Dashboard](./screenshots/dashboard.png)
+### User Recommendations
+![User Recommendations](./screenshots/recommended.png)
 
-### Book Management
-![Book Management](./screenshots/books.png)
+### Manage books
+![manage books](./screenshots/manageusers.png)
 
-### AI Query Agent
-![AI Query Agent](./screenshots/ai-query.png)
-
-### Admin Dashboard
-![Admin Dashboard](./screenshots/admin.png)
+### Insights Dashboard
+![Insights](./screenshots/insights.png)
 
 ## Testing
-
-Run tests for the backend:
-```bash
-cd server
-npm test
-```
 
 Run tests for the frontend:
 ```bash

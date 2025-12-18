@@ -181,7 +181,7 @@ const SignUp = () => {
           Sign Up
         </h1>
 
-        {/* Welcome message */}
+        
         <p 
           style={{ 
             color: '#666', 
@@ -191,7 +191,7 @@ const SignUp = () => {
           BookWorm Discover your next great read
         </p>
 
-        {/* General error message */}
+        
         {error && (
           <div 
             style={{ 
@@ -240,7 +240,7 @@ const SignUp = () => {
           Sign Up with google
         </button>
 
-        {/* OR separator */}
+       
         <div 
           style={{ 
             display: 'flex', 

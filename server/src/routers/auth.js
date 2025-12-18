@@ -100,7 +100,7 @@ authRouter.post('/register', async (req, res) => {
   }
 });
 
-// VALIDATE
+
 authRouter.post('/validate', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('-password');

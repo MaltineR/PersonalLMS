@@ -9,7 +9,7 @@ export default function DashboardRedirect() {
   useEffect(() => {
     if (!user) return; 
 
-    // Redirect based on role
+    
     if (user.role === "admin") {
       navigate("/admin", { replace: true });
     } else if (user.role === "user") {
