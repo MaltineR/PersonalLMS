@@ -15,7 +15,6 @@ const db = mongoose.connect(mongoUrl);
 const authRouter = require('./routers/auth');
 const userRouter = require('./routers/user');
 const bookRouter = require('./routers/book');
-const emailTestRouter = require('./routers/emailTest');
 const adminRouter = require('./routers/admin');   
 
 
@@ -40,7 +39,6 @@ app.use(session({
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/book', bookRouter);
-app.use('/api/v1/test', emailTestRouter);
 app.use('/api/v1/admin', adminRouter);  
 
 app.use(passport.initialize());

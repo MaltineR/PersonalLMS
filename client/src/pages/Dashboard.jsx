@@ -189,7 +189,7 @@ function Dashboard() {
           <input
             type="text"
             className="border p-3 flex-1 rounded-md"
-            placeholder='Ask: "How many books do I have?"'
+            placeholder='Ask: "List all the books i own"'
             value={aiQuery}
             onChange={(e) => setAiQuery(e.target.value)}
           />
