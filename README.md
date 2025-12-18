@@ -47,7 +47,7 @@ ollama serve
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/MaltineR/PersonalLMS.git
-cd library-management-system
+cd PersonalLibrary
 ```
 
 ### 2. Setup the Server (Backend)

@@ -101,11 +101,13 @@ function BookCard({ book, onDelete, onUpdate, onTogglePublic, isBorrowed }) {
             <div
               className="bg-green-300 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(book.pagesread / book.totalpages) * 100}%` }}
+              data-testid="progress-bar"
             ></div>
           </div>
         </div>
 
         <button
+          aria-label="Edit book"
           onClick={toggleEditModal}
           className="ml-auto right-4 w-8 h-8 bg-green-800 rounded-full flex items-center justify-center text-white hover:bg-green-700 transition-colors"
         >

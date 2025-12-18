@@ -51,10 +51,10 @@ const EditPage = ({ book, onSubmit, onClose }) => {
       totalpages: Number(formData.totalpages),
       pagesread: Number(formData.pagesread),
       price: Number(formData.price),
-      _id: book._id, // ensure the id is included
+      _id: book._id, 
     };
 
-    onSubmit(updatedBook); // calls BookCard which updates backend
+    onSubmit(updatedBook); 
   };
 
   const handleClose = () => onClose();

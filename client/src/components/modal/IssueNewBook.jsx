@@ -33,7 +33,7 @@ const IssueBook = ({ onClose, onSubmit }) => {
       return;
     }
     
-    // Map the status to match your backend expectations
+    
     let readingStatus;
     switch(selectedStatus) {
       case 'read':
@@ -223,7 +223,7 @@ const IssueBook = ({ onClose, onSubmit }) => {
             </div>
           )}
 
-          {/* Footer with Submit Button */}
+          
           <div className="pt-4">
             <button 
               type="submit" 
