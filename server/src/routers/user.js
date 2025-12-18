@@ -1,19 +1,19 @@
-
 const express = require('express');
 const authMiddleware = require('../middlewares/authMiddleware');
 const userRouter = express.Router();
 const User = require('../models/UserModel');
 const Book = require('../models/BookModel');
 
+require('dotenv').config();
+const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.1';
 
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-
 userRouter.get('/', authMiddleware, (req, res) => {
   res.send('User endpoint is working!');
 });
-
 
 userRouter.get('/me', authMiddleware, async (req, res) => {
   try {
@@ -34,7 +34,6 @@ userRouter.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
-
 userRouter.post('/ai-query', authMiddleware, async (req, res) => {
   const { query } = req.body;
   const userId = req.userId;
@@ -46,7 +45,6 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
 
     const lowerQuery = query.toLowerCase();
 
-    
     if (lowerQuery.includes('how many books')) {
       const count = await Book.countDocuments({ owner: userId });
       return res.json({ data: [{ label: 'Books Owned', value: count }] });
@@ -57,7 +55,7 @@ userRouter.post('/ai-query', authMiddleware, async (req, res) => {
       return res.json({ data: books });
     }
 
-    // Ollama
+    // Ollama AI
     const user = await User.findById(userId).populate('booksOwned');
     if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -78,11 +76,11 @@ Allowed formats:
 User question: "${query}"
 `;
 
-    const response = await fetch('http://localhost:11434/api/generate', {
+    const response = await fetch(`${OLLAMA_HOST}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama3.1',
+        model: OLLAMA_MODEL,
         prompt,
         stream: false,
       }),
@@ -100,7 +98,6 @@ User question: "${query}"
       return res.json({ data: [] });
     }
 
-    
     if (aiOutput.type === 'count') {
       return res.json({ data: [{ label: 'Books Owned', value: aiOutput.count }] });
     }
@@ -116,7 +113,7 @@ User question: "${query}"
   }
 });
 
-// Recommendation
+// Recommendation route
 userRouter.get('/recommendations', authMiddleware, async (req, res) => {
   const userId = req.userId;
 
@@ -130,7 +127,6 @@ userRouter.get('/recommendations', authMiddleware, async (req, res) => {
       return res.json({ data: [], message: 'No books to base recommendations on.' });
     }
 
-    
     const prompt = `
 You are an AI assistant recommending books for a single user's personal library.
 
@@ -151,10 +147,10 @@ Answer ONLY in JSON like:
 }
 `;
 
-    const response = await fetch('http://localhost:11434/api/generate', {
+    const response = await fetch(`${OLLAMA_HOST}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'llama3.1', prompt, stream: false }),
+      body: JSON.stringify({ model: OLLAMA_MODEL, prompt, stream: false }),
     });
 
     if (!response.ok) throw new Error('Ollama API failed');
@@ -175,6 +171,5 @@ Answer ONLY in JSON like:
     res.status(500).json({ error: 'AI recommendation failed' });
   }
 });
-
 
 module.exports = userRouter;

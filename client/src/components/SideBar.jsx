@@ -27,7 +27,7 @@ function SideBar() {
         ];
     }
 
-    // Set active menu based on current path
+    
     useEffect(() => {
         const currentIndex = menuItems.findIndex(item => item.link === location.pathname);
         if (currentIndex !== -1) setActiveItem(currentIndex);
@@ -38,7 +38,7 @@ function SideBar() {
         navigate(link);
     };
 
-    // Loading state if user is not yet fetched
+    
     if (!user) {
         return (
             <div className="fixed left-0 top-0 h-screen flex items-center z-50 ml-6">
