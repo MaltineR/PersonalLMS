@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
+//require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
@@ -9,7 +10,9 @@ const session = require('express-session');
 
 const mongoose = require('mongoose');
 const mongoUrl = process.env.DATABASE_URL;
-const db = mongoose.connect(mongoUrl);
+const db = mongoose.connect(mongoUrl)
+.then(() => console.log("Connected to MongoDB Atlas"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Routers
 const authRouter = require('./routers/auth');
