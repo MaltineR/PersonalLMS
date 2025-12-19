@@ -238,7 +238,7 @@ const AdminDashboard = () => {
 
           {/* User Insights */}
           <div className="mt-6">
-            <h3 className="font-semibold mb-2">Analyze User</h3>
+            <h3 className="font-semibold mb-2">Analyze User (Please wait a few seconds)</h3>
             <select
               className="border p-3 rounded w-full mb-4"
               value={selectedUser}
@@ -254,12 +254,10 @@ const AdminDashboard = () => {
               <div className="bg-green-50 p-4 rounded shadow mt-2 relative">
                 <h4 className="font-bold mb-2">{userInsights.user.name}</h4>
                 <p className="italic mb-2">{userInsights.summary}</p>
-                <h5 className="font-semibold mb-1">Insights</h5>
-                {Array.isArray(userInsights.insights) && (
-                  <ul className="list-disc ml-5">
-                    {userInsights.insights.map((i, idx) => <li key={idx}>{i}</li>)}
-                  </ul>
-                )}
+                <h5 className="font-semibold mb-1">AI Insights</h5>
+<p className="text-gray-700 whitespace-pre-line">
+  {userInsights.aiInsights || "No AI insights available."}
+</p>
               </div>
             )}
           </div>

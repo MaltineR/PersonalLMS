@@ -128,46 +128,88 @@ router.get("/user-insights/:id", authMiddleware, isAdmin, async (req, res) => {
       return res.json({
         user,
         summary: "This user has not added any books yet.",
-        insights: [],
+        aiInsights: ""
       });
     }
 
     const totalBooks = books.length;
-    const avgPages =
-      Math.round(
-        books.reduce((sum, b) => sum + (b.totalpages || 0), 0) / totalBooks
-      ) || 0;
-    const booksRead = books.filter((b) => b.readingstatus === "read").length;
-
-    const insights = [];
-
-    if (avgPages < 200) insights.push(`${user.name} tends to read short books`);
-    else if (avgPages > 400) insights.push(`${user.name} prefers long books`);
-
-    if (booksRead / totalBooks > 0.6)
-      insights.push(`${user.name} usually finishes their books`);
+    const booksRead = books.filter(b => b.readingstatus === "read").length;
+    const avgPages = Math.round(
+      books.reduce((sum, b) => sum + (b.totalpages || 0), 0) / totalBooks
+    );
 
     const genreCounts = {};
-    books.forEach((b) => {
+    books.forEach(b => {
       if (b.genre) genreCounts[b.genre] = (genreCounts[b.genre] || 0) + 1;
     });
-    const sortedGenres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1]);
-    if (sortedGenres.length > 0) {
-      const topGenre = sortedGenres[0][0];
-      insights.push(`${user.name}'s most read genre is ${topGenre}`);
+
+    const topGenre =
+      Object.keys(genreCounts).length > 0
+        ? Object.keys(genreCounts).reduce((a, b) =>
+            genreCounts[a] > genreCounts[b] ? a : b
+          )
+        : "unknown";
+
+    
+  const prompt = `
+You are an analytics assistant.
+
+Based on the data below, generate 2–4 short insights.
+Each insight must be one clear sentence.
+Use the user's name when relevant.
+
+Data:
+- Name: ${user.name}
+- Total books: ${totalBooks}
+- Books read: ${booksRead}
+- Average pages per book: ${avgPages}
+- Most read genre: ${topGenre}
+
+Rules:
+- Write insights like examples below
+- Do NOT explain calculations
+- Do NOT mention statistics explicitly
+
+Examples:
+- "Fantasy is the most read genre."
+- "${user.name} tends to read short books."
+- "${user.name} usually finishes their books."
+
+Output format:
+Return each insight on a new line.
+Do NOT add extra text.
+`; 
+    const response = await fetch(
+      `${process.env.OLLAMA_HOST}/api/generate`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: process.env.OLLAMA_MODEL,
+          prompt,
+          stream: false
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Ollama request failed");
     }
+
+    const data = await response.json();
 
     res.json({
       user,
-      stats: { totalBooks, booksRead, avgPages },
-      summary: `${user.name} owns ${totalBooks} books.`,
-      insights,
+      stats: { totalBooks, booksRead, avgPages, topGenre },
+      aiInsights: data.response.trim()
     });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to load user insights" });
+    res.status(500).json({ message: "Failed to generate AI insights" });
   }
 });
+
 // AI QUERY
 
 router.post("/ai-query", authMiddleware, isAdmin, async (req, res) => {
