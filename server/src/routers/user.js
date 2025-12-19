@@ -5,8 +5,21 @@ const User = require('../models/UserModel');
 const Book = require('../models/BookModel');
 
 require('dotenv').config();
-const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.1';
+
+const isOllamaEnabled =
+  process.env.NODE_ENV !== "production" &&
+  process.env.OLLAMA_HOST;
+
+const OLLAMA_HOST = isOllamaEnabled
+  ? process.env.OLLAMA_HOST
+  : null;
+
+const OLLAMA_MODEL = isOllamaEnabled
+  ? process.env.OLLAMA_MODEL || "llama3.1"
+  : null;
+
+//const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
+//const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.1';
 
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
