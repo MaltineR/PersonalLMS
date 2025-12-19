@@ -111,16 +111,16 @@ Use these credentials to log in and access the Admin Dashboard, where you can ma
 ## Screenshots
 
 ### User Library
-![User Library](./screenshots/userlibrary.png)
+![User Library](./screenshots/userlibrary.PNG)
 
 ### User Recommendations
-![User Recommendations](./screenshots/recommended.png)
+![User Recommendations](./screenshots/recommended.PNG)
 
 ### Manage books
-![manage books](./screenshots/manageusers.png)
+![manage books](./screenshots/manageusers.PNG)
 
 ### Insights Dashboard
-![Insights](./screenshots/insights.png)
+![Insights](./screenshots/insights.PNG)
 
 ## Testing
 
