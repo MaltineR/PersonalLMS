@@ -5,7 +5,7 @@ yarn-error.log
 dist/
 build/
 
-# Env files (secrets)
+# Env files 
 .env
 server/.env
 client/.env
